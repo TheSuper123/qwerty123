@@ -38,7 +38,23 @@ python3 -m http.server 8080 --directory site --bind 127.0.0.1
 
 Otwórz serwowany adres w lokalnej przeglądarce. Zatrzymaj serwer przez `Ctrl+C`.
 
-Workflow [GitHub Pages](.github/workflows/pages.yml) publikuje wyłącznie katalog `site/` po wysłaniu zmian na `main` lub ręcznym uruchomieniu. W ustawieniach repozytorium wybierz **Pages → Source → GitHub Actions**. Docelowy adres dla obecnej nazwy repozytorium: `https://thesuper123.github.io/qwerty123/`. Samo zapisanie plików nie oznacza, że strona jest już opublikowana.
+Workflow [GitHub Pages](.github/workflows/pages.yml) publikuje wyłącznie katalog `site/` po wysłaniu zmian na `main` lub ręcznym uruchomieniu. Docelowy adres dla obecnej nazwy repozytorium: `https://thesuper123.github.io/qwerty123/`. Samo dodanie workflow nie włącza witryny Pages.
+
+### Pierwsza publikacja
+
+1. Właściciel repozytorium otwiera [Settings → Pages](https://github.com/TheSuper123/qwerty123/settings/pages).
+2. W sekcji **Build and deployment** ustawia **Source → GitHub Actions**. Nie wybiera `Deploy from a branch`.
+3. Po zapisaniu wraca do [Actions → Publish Most to GitHub Pages](https://github.com/TheSuper123/qwerty123/actions/workflows/pages.yml).
+4. Wybiera **Run workflow → Branch: main → Run workflow**. Trzeba uruchomić workflow ponownie po zmianie ustawienia; wcześniejszy czerwony wynik nie zmieni się sam.
+5. Czeka na zielone zadania `build` i `deploy`. Dopiero zakończone wdrożenie potwierdza publikację strony.
+
+### Błąd „Get Pages site failed / Not Found”
+
+Ten błąd w `actions/configure-pages` oznacza, że token workflow nie może odczytać witryny Pages. Przy pierwszej publikacji należy najpierw aktywować Pages według instrukcji powyżej. Jeśli witryna jest już aktywna, trzeba sprawdzić dostęp workflow do Pages oraz dostępność tej funkcji dla repozytorium i planu GitHub.
+
+Krok `Verify Pages activation` sprawdza dostępność konfiguracji i źródło `workflow` przed publikacją. Przy problemie kończy zadanie błędem i zapisuje konkretną instrukcję w podsumowaniu uruchomienia. Nie zmienia ustawień repozytorium.
+
+Samo ustawienie `enablement: true` nie rozwiązuje aktywacji ze standardowym `GITHUB_TOKEN`: [kontrakt akcji configure-pages](https://github.com/actions/configure-pages/blob/v5/action.yml) wymaga w takim trybie dodatkowego tokena z uprawnieniami administracyjnymi. Ten projekt korzysta ze standardowego tokena workflow; pierwszą aktywację wykonuje właściciel w ustawieniach, bez dodawania sekretów.
 
 ## Najbliższy cel
 
