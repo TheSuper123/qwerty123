@@ -1,6 +1,7 @@
 import SwiftUI
 
 @main
+@MainActor
 struct MostStoreApp: App {
     @StateObject private var model = StoreModel()
     var body: some Scene {
