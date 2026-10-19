@@ -10,7 +10,7 @@ Most to otwarte narzędzie do instalowania i odnawiania własnych aplikacji iOS:
 
 Otwórz [stronę pobierania](https://thesuper123.github.io/qwerty123/#pobierz) lub [wydania GitHub](https://github.com/TheSuper123/qwerty123/releases). Pobierz ZIP, rozpakuj i uruchom `MostServer.exe`. Program otworzy lokalny panel w przeglądarce i nie wymaga Pythona.
 
-Wymagane są sterowniki Apple. Podpisywanie kontem Apple wymaga dodatkowo przygotowania usługi anisette v3; domyślnie własnej na PC. `MostStore-unsigned.ipa` trzeba podpisać własnym kontem przed instalacją. **[Pełna instrukcja Windows i iPhone](docs/PROGRAM_WINDOWS.md)** opisuje te kroki oraz aktualne ograniczenia. Brak podpisu wydawcy Windows; to pierwsza wersja preview, a nie komplet funkcji z docelowego planu.
+Wymagane są sterowniki Apple oraz [Microsoft Visual C++ Redistributable x64](https://aka.ms/vs/17/release/vc_redist.x64.exe). Jeśli Windows zgłasza brak `VCRUNTIME140.dll`, zainstaluj ten oficjalny pakiet Microsoft i ponownie uruchom program. Podpisywanie kontem Apple wymaga dodatkowo przygotowania usługi anisette v3; domyślnie własnej na PC. `MostStore-unsigned.ipa` trzeba podpisać własnym kontem przed instalacją. **[Pełna instrukcja Windows i iPhone](docs/PROGRAM_WINDOWS.md)** opisuje te kroki oraz aktualne ograniczenia. Brak podpisu wydawcy Windows; to pierwsza wersja preview, a nie komplet funkcji z docelowego planu.
 
 Kod serwera i testy:
 
