@@ -1,5 +1,12 @@
 {
-  "status": "success",
-  "commit": "71115c190858cf63d48fb302c47bcef303c80092",
-  "version": "0.1.0"
+  "status": "failed",
+  "commit": "d327c4b8d5fcd899de12e5300082c197bee2ce7f",
+  "updated_at": "2026-10-19T22:28:06.509837+00:00",
+  "run_url": "https://github.com/TheSuper123/qwerty123/actions/runs/39333662368",
+  "jobs": {
+    "test": "success",
+    "windows": "success",
+    "ios": "success",
+    "publish": "failure"
+  }
 }
