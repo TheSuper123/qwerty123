@@ -10,9 +10,10 @@ struct RootView: View {
             HistoryView().tabItem { Label("Historia", systemImage: "clock") }
             ConnectionView().tabItem { Label("Połączenie", systemImage: "network") }
         }
-        .task {
+        .task(id: phase) {
+            guard phase == .active else { return }
             while !Task.isCancelled {
-                if phase == .active { await model.refresh() }
+                await model.refresh()
                 try? await Task.sleep(for: .seconds(3))
             }
         }
@@ -137,7 +138,7 @@ struct ConnectionView: View {
                     TextEditor(text: $text).frame(minHeight: 90).font(.caption.monospaced()).autocorrectionDisabled().textInputAutocapitalization(.never).privacySensitive()
                     Button("Sprawdź konfigurację") { parse(text); text = "" }.disabled(text.isEmpty || model.working)
                 }
-                Section("Zakres wydania 0.1.0") {
+                Section("Zakres wersji preview") {
                     Label("MostStore LAN · HTTPS", systemImage: "network")
                     Text("PC instaluje aplikacje przez własne połączenie USB/Wi-Fi z iPhonem. Musi pozostać włączony.").font(.footnote)
                     Label("Remote + LocalDevVPN: do implementacji", systemImage: "wrench.and.screwdriver")

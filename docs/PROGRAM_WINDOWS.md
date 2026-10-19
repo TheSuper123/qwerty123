@@ -1,4 +1,4 @@
-# MostServer 0.1.0 i MostStore LAN — instrukcja preview
+# MostServer 0.1.x i MostStore LAN — instrukcja preview
 
 Repozytorium zawiera implementację, testy i workflow tworzący przenośne EXE/ZIP Windows oraz niepodpisaną IPA klienta iOS. Publikacja paczek jest warunkowana udanym CI. Weryfikacja instalacji na fizycznym iPhonie i podpis wydawcy Windows nie zostały wykonane w środowisku deweloperskim Linux.
 
@@ -78,6 +78,8 @@ Po zmianie adresu PC ponownie uruchom LAN i utwórz nowe powiązanie. Serwer two
 ## 6. Dane i odzyskiwanie
 
 Domyślny katalog Windows: `%LOCALAPPDATA%\MostServer`. Zawiera `most.sqlite3`, oryginały w `artifacts`, katalog roboczy i zaszyfrowany `vault`. W Windows Credential Manager zapisany jest klucz główny `org.mostserver.vault`; bez niego nie da się odczytać vault po przeniesieniu danych. Nie kasuj go jako sposobu wylogowania.
+
+Jeden katalog danych może być używany tylko przez jedną instancję MostServer. Blokada systemowa zapobiega równoczesnym instalacjom z dwóch procesów i jest zwalniana także po zakończeniu procesu. Aby użyć drugiego niezależnego środowiska, potrzebny jest osobny katalog danych i port.
 
 Hasło Apple nie jest utrwalane. Po ponownym uruchomieniu logowanie trzeba wykonać na PC; certyfikaty i stan anisette pozostają zaszyfrowane do ponownego użycia. Baza i oryginały IPA nie są szyfrowane przez Most; podlegają ochronie profilu Windows/dysku.
 

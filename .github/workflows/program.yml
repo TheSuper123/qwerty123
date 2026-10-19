@@ -62,6 +62,7 @@ jobs:
       - run: cargo build --locked --release --bin MostServer
         env:
           MOST_LICENSES_FILE: ${{ github.workspace }}/dist/notices/ALL_LICENSES.txt
+      - run: python scripts/smoke_program.py target/release/MostServer.exe
       - run: python scripts/package_windows.py
       - uses: actions/upload-artifact@v4
         with:

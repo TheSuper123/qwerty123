@@ -4,7 +4,7 @@
 
 Most to otwarte narzędzie do instalowania i odnawiania własnych aplikacji iOS: **MostServer** działa na komputerze, a **MostStore** na iPhonie. Podpisywanie i prowadzenie instalacji pozostają po stronie PC. Pierwsza implementacja obsługuje USB/Wi-Fi do urządzenia i klienta LAN; relay zdalny jest w planie.
 
-> **Stan: preview 0.1.0.** Zaimplementowano MostServer w Rust, lokalny panel, integrację podpisywania/instalacji i klienta MostStore LAN w SwiftUI. Test na fizycznym iPhonie, Remote i LocalDevVPN pozostają do wykonania. Workflow natywnie buduje EXE/ZIP Windows i niepodpisaną IPA na macOS; dopiero udany build aktywuje pobieranie na stronie.
+> **Stan: preview 0.1.x.** Zaimplementowano MostServer w Rust, lokalny panel, integrację podpisywania/instalacji i klienta MostStore LAN w SwiftUI. Test na fizycznym iPhonie, Remote i LocalDevVPN pozostają do wykonania. Workflow natywnie buduje EXE/ZIP Windows i niepodpisaną IPA na macOS; dopiero udany build aktywuje pobieranie na stronie.
 
 ## Pobierz i uruchom
 

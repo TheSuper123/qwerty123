@@ -71,6 +71,15 @@ async fn run() -> Result<()> {
         .data_dir
         .or_else(|| dirs::data_local_dir().map(|d| d.join("MostServer")))
         .context("Nie znaleziono katalogu danych użytkownika. Użyj --data-dir.")?;
+    std::fs::create_dir_all(&root).context("Nie można utworzyć katalogu danych.")?;
+    let instance_lock = std::fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .truncate(false)
+        .open(root.join("instance.lock"))
+        .context("Nie można zabezpieczyć katalogu danych.")?;
+    instance_lock.try_lock().map_err(|_|anyhow::anyhow!("MostServer już używa tego katalogu danych. Zamknij poprzednią instancję; zmiana portu nie uruchamia drugiego niezależnego serwera."))?;
     let listener=tokio::net::TcpListener::bind(SocketAddrV4::new(Ipv4Addr::LOCALHOST,options.port)).await.context("Nie można otworzyć lokalnego portu. Zamknij poprzedni MostServer albo użyj --port z innym numerem.")?;
     let authority = listener.local_addr()?.to_string();
     let mut token = [0u8; 32];
