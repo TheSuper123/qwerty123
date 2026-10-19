@@ -1,0 +1,10 @@
+/target/
+/.most-data/
+/dist/
+.DS_Store
+*.log
+__pycache__/
+*.pyc
+apps/ios/.build/
+apps/ios/MostStore.xcodeproj/
+apps/ios/build/

@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "status": "pending",
+  "version": "0.1.0",
+  "windows_code_signed": false,
+  "ios_requires_signing": true,
+  "hardware_validation": "not_run",
+  "files": {}
+}

@@ -1,6 +1,6 @@
 # Most Protocol v1 — projekt kontraktu
 
-To specyfikacja planowanego API, nie działający backend. Kontrakt zostanie zamrożony po prototypie transportu; wtedy powstanie OpenAPI i wspólne fixtures testowe.
+To specyfikacja docelowego MostLink. Preview 0.1.0 ma już działający backend, ale używa węższego kontraktu panelu `/api/*` oraz klienta LAN `/v1/*`, opisanego w [PROGRAM_WINDOWS.md](PROGRAM_WINDOWS.md). Niniejsza specyfikacja pozostaje planem dla pełnego transportu Remote i mTLS.
 
 ## 1. Reguły wspólne
 

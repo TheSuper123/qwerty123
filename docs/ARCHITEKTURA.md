@@ -1,6 +1,6 @@
 # Architektura Most
 
-Dokument opisuje docelowy projekt. Żaden adapter urządzenia nie został jeszcze zaimplementowany w tym repozytorium.
+Dokument opisuje docelowy projekt. Preview 0.1.0 implementuje adapter `idevice`, podpisywanie `isideload`, lokalny panel i klienta MostStore LAN. Zakres i różnice względem docelowego MostLink opisuje [PROGRAM_WINDOWS.md](PROGRAM_WINDOWS.md): bieżący LAN używa HTTPS z pinem i klucza urządzenia, a mTLS, zdalny relay i LocalDevVPN pozostają do implementacji i testów sprzętowych.
 
 ## 1. Podział odpowiedzialności
 
@@ -23,18 +23,18 @@ Kanał do Apple jest zewnętrzną zależnością podpisywania. „Bez chmury” 
 
 | Obszar | Wybór początkowy | Uzasadnienie / warunek |
 | --- | --- | --- |
-| Rdzeń PC | Python 3.12, asyncio | Integracja z bibliotekami urządzeń, mały prototyp |
-| API | FastAPI, Pydantic, Uvicorn | Typowany kontrakt i zdarzenia; TLS/mTLS konfigurowany przed udostępnieniem sieci |
-| Interfejs PC | PySide6, zasobnik systemowy | Natywny proces Windows; audyt licencji Qt i sposobu pakowania |
-| Urządzenie PC | Adapter nad pymobiledevice3 | Kandydat GPL-3.0, przypięta wersja i test Windows przed przyjęciem |
-| Podpisywanie | Osobny worker i adapter do zweryfikowanego silnika, np. AltSign | Build Windows, profilowanie i autoryzacja Apple to bramka etapu 0, nie gotowa funkcja FastAPI |
+| Rdzeń PC | Rust 1.94, Tokio | Jeden natywny EXE; dokładne wersje w Cargo.lock |
+| API | Axum i rustls | Panel loopback oraz oddzielny, opcjonalny HTTPS dla klienta LAN |
+| Interfejs PC | HTML/CSS/JS wbudowane w EXE | Otwierany w przeglądarce, bez dodatkowego runtime i bez zewnętrznych zasobów |
+| Urządzenie PC | idevice 0.1.68 | Usługi Apple; wymaga sterowników na Windows i walidacji sprzętowej |
+| Podpisywanie | isideload 0.5.0, apple-codesign-quick | Logowanie i 2FA, provisioning, signer; ograniczenia capabilities i zewnętrzna/lokalna anisette v3 |
 | Dane PC | SQLite + magazyn plików według SHA-256 | Mały zakres, jawne transakcje i odtwarzanie zadań |
-| Sekrety PC | DPAPI / Windows Credential Manager | Dostęp ograniczony do użytkownika uruchamiającego serwer |
+| Sekrety PC | AES-256-GCM, klucz w Windows Credential Manager | Hasło Apple nie jest zapisywane; certyfikaty, anisette i TLS w zaszyfrowanym vault |
 | Klient | SwiftUI, URLSession, Network.framework, Keychain | Natywny iOS, certyfikat klienta i przypięta tożsamość PC |
 | MostTunnel | Adapter do istniejącego LocalDevVPN i zweryfikowanego proxy | Osobny prototyp Swift/Rust FFI; nie zakładamy zgodności bibliotek tylko na podstawie README |
-| Pakowanie | PyInstaller + podpisany instalator Windows | Dopiero po audycie bibliotek, sterowników i możliwości redystrybucji |
+| Pakowanie | Cargo/MSVC, przenośny EXE i ZIP | Natywny build Windows w CI; bez certyfikatu wydawcy w pierwszym preview |
 
-To propozycje do prototypu, nie obietnica gotowego stosu produkcyjnego. Dokładne wersje i sumy artefaktów zostaną przypięte po bramce 0. Nie dopisujemy zależności aplikacji, zanim nie ma implementacji.
+To stos implementacji preview, nie deklaracja gotowości produkcyjnej. Wersje i sumy źródeł przypina Cargo.lock; paczki i manifest pobierania powstają po udanych buildach. Bramka urządzenia i konta Apple nadal wymaga rzeczywistych testów.
 
 Proponowany późniejszy podział kodu:
 

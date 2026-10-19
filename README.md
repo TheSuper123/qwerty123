@@ -2,9 +2,24 @@
 
 **Twój PC. Twoje aplikacje. Twój most do iPhone’a.**
 
-Most to plan otwartego narzędzia do instalowania i odnawiania własnych aplikacji iOS: **MostServer** działa na komputerze, a **MostStore** na iPhonie. Podpisywanie i prowadzenie instalacji pozostają po stronie PC. Telefon wybiera aplikację, pokazuje postęp i, w trybie zdalnym, udostępnia kontrolowany most transportowy.
+Most to otwarte narzędzie do instalowania i odnawiania własnych aplikacji iOS: **MostServer** działa na komputerze, a **MostStore** na iPhonie. Podpisywanie i prowadzenie instalacji pozostają po stronie PC. Pierwsza implementacja obsługuje USB/Wi-Fi do urządzenia i klienta LAN; relay zdalny jest w planie.
 
-> **Stan: projekt i plan techniczny.** Repozytorium zawiera dokumentację oraz działającą statyczną stronę projektu. MostServer, MostStore i protokół instalacji nie są jeszcze zaimplementowane ani przetestowane na urządzeniach.
+> **Stan: preview 0.1.0.** Zaimplementowano MostServer w Rust, lokalny panel, integrację podpisywania/instalacji i klienta MostStore LAN w SwiftUI. Test na fizycznym iPhonie, Remote i LocalDevVPN pozostają do wykonania. Workflow natywnie buduje EXE/ZIP Windows i niepodpisaną IPA na macOS; dopiero udany build aktywuje pobieranie na stronie.
+
+## Pobierz i uruchom
+
+Otwórz [stronę pobierania](https://thesuper123.github.io/qwerty123/#pobierz) lub [wydania GitHub](https://github.com/TheSuper123/qwerty123/releases). Pobierz ZIP, rozpakuj i uruchom `MostServer.exe`. Program otworzy lokalny panel w przeglądarce i nie wymaga Pythona.
+
+Wymagane są sterowniki Apple. Podpisywanie kontem Apple wymaga dodatkowo przygotowania usługi anisette v3; domyślnie własnej na PC. `MostStore-unsigned.ipa` trzeba podpisać własnym kontem przed instalacją. **[Pełna instrukcja Windows i iPhone](docs/PROGRAM_WINDOWS.md)** opisuje te kroki oraz aktualne ograniczenia. Brak podpisu wydawcy Windows; to pierwsza wersja preview, a nie komplet funkcji z docelowego planu.
+
+Kod serwera i testy:
+
+```sh
+cargo test --locked --workspace
+cargo run --locked --bin MostServer
+```
+
+Wersję Rust przypina `rust-toolchain.toml`, a zależności `Cargo.lock`. Budowanie iOS: `apps/ios/project.yml` i XcodeGen na Macu.
 
 ## Założenia
 
@@ -21,6 +36,7 @@ Most to plan otwartego narzędzia do instalowania i odnawiania własnych aplikac
 
 | Dokument | Zawartość |
 | --- | --- |
+| [Program Windows i MostStore LAN](docs/PROGRAM_WINDOWS.md) | Uruchomienie, sterowniki, anisette, pierwsza instalacja i aktualne API |
 | [Plan produktu](docs/PLAN_PRODUKTU.md) | Nazwa, zakres, ekrany, scenariusze, wymagania i granice projektu |
 | [Architektura](docs/ARCHITEKTURA.md) | Komponenty, podpisywanie, USB/LAN, MostLink, LocalDevVPN i bezpieczeństwo |
 | [Kontrakt API](docs/API.md) | Parowanie, operacje, zdarzenia, błędy i kanał zdalny |

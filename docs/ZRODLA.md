@@ -42,6 +42,8 @@ Bezpośredni dostęp do dwóch pierwszych dokumentów zwrócił w środowisku pr
 
 - Istnieje spójny plan produktu, architektury, API i etapów implementacji.
 - Istnieje statyczna strona oraz konfiguracja jej wdrożenia na GitHub Pages.
-- Nie ma jeszcze działającego serwera instalacyjnego, aplikacji iOS, certyfikacji kompatybilności ani wyniku testów na iPhonie.
+- Implementacja preview ma serwer Rust z integracją isideload 0.5.0 / idevice 0.1.68, panel i klienta MostStore LAN w SwiftUI. Wersje i źródła są przypięte w Cargo.lock, a licencje zebrane w THIRD_PARTY_NOTICES.md i paczkach.
+- [isideload](https://github.com/nab138/isideload) oraz [idevice](https://github.com/jkcoxson/idevice) udostępniają obsługę konta, podpisywania i urządzeń. Odczytano ich dokumentację i API; ograniczona obsługa entitlementów w isideload jest uwzględniona w ograniczeniach preview.
+- Nie ma jeszcze certyfikacji kompatybilności, wyniku testów na iPhonie ani implementacji relaya Remote/LocalDevVPN.
 
 Test strony i dokumentacji nie jest testem sideloadingu. Wyniki przyszłych prób urządzeń powinny być zapisywane osobno z dokładnymi wersjami i statusem każdego scenariusza.

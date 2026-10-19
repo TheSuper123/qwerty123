@@ -1,6 +1,6 @@
 # Roadmapa, testy i wydanie
 
-Dokument obejmuje planowanie i implementację. Obecnie zrealizowane są dokumentacja oraz statyczna strona; żaden kamień milowy urządzenia nie jest jeszcze zaliczony.
+Dokument opisuje docelową roadmapę. Preview 0.1.0 ma już kod serwera Rust, panel, integrację isideload/idevice, trwałe zadania, HTTPS do klienta MostStore LAN i workflow natywnych buildów. Aktualną instrukcję zawiera [PROGRAM_WINDOWS.md](PROGRAM_WINDOWS.md). Żaden kamień milowy wymagający fizycznego iPhone’a nie został jeszcze zaliczony; testy programu nie zastępują tych bramek.
 
 ## 1. Etapy i bramki
 

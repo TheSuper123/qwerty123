@@ -23,6 +23,7 @@
           <span>most<span class="brand-dot">.</span></span>
         </a>
         <nav aria-label="Nawigacja główna" class="navigation">
+          <a href="#pobierz">Pobierz</a>
           <a href="#pomysl">Pomysł</a>
           <a href="#polaczenie">Jak to działa</a>
           <a href="#roadmapa">Roadmapa</a>
@@ -35,11 +36,11 @@
     <main id="tresc">
       <section class="hero container" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> NIEZALEŻNY PROJEKT · ETAP KONCEPCJI</p>
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> MOSTSERVER + MOSTSTORE · PREVIEW 0.1.0</p>
           <h1 id="hero-title">Twój PC.<br>Twoje aplikacje.<br><span>Jeden most.</span></h1>
-          <p class="hero-description">Własny serwer na komputerze. Własny sklep na iPhonie. Plan narzędzia, które połączy je przez kabel, Wi-Fi i&nbsp;internet — na Twoich zasadach.</p>
+          <p class="hero-description">Własny serwer na komputerze i klient na iPhonie. Importuj IPA, połącz urządzenie i zleć instalację ze swojego PC. Pierwsze wydanie: USB i&nbsp;LAN.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#plan">Odkryj pełny plan <span aria-hidden="true">↗</span></a>
+            <a class="button button-primary" href="#pobierz">Pobierz MostServer <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="#polaczenie">Zobacz połączenie <span aria-hidden="true">↓</span></a>
           </div>
           <p class="hero-note">MostServer + MostStore. Bez obowiązkowego backendu Most w chmurze.</p>
@@ -68,16 +69,22 @@
             <div class="phone-tunnel"><span class="status-dot" aria-hidden="true"></span> Lokalny most iOS</div>
             <span class="phone-home" aria-hidden="true"></span>
           </div>
-          <span class="visual-footer">KONCEPCJA INTERFEJSU · NIE JEST DZIAŁAJĄCĄ APLIKACJĄ</span>
+          <span class="visual-footer">SCHEMAT PRODUKTU · REMOTE I LOCALDEVVPN W PLANIE</span>
         </div>
       </section>
 
-      <div class="container project-note"><span class="note-symbol" aria-hidden="true">i</span><p><strong>Najpierw dobry plan.</strong> Serwer i aplikacja iOS są planowane. Ta strona pokazuje architekturę, zakres i kolejne kroki — nie oferuje jeszcze instalatora.</p><a href="https://github.com/TheSuper123/qwerty123/blob/main/docs/ROADMAPA.md">Sprawdź zakres <span aria-hidden="true">↗</span></a></div>
+      <div class="container project-note"><span class="note-symbol" aria-hidden="true">i</span><p><strong>Pierwsza implementacja.</strong> MostServer i klient MostStore LAN mają kod oraz proces budowania. Test na fizycznym iPhonie pozostaje do wykonania. Remote i LocalDevVPN wymagają dalszych prac.</p><a href="https://github.com/TheSuper123/qwerty123/blob/main/docs/PROGRAM_WINDOWS.md">Instrukcja programu <span aria-hidden="true">↗</span></a></div>
+
+      <section class="section container download-section" id="pobierz" aria-labelledby="download-title">
+        <noscript>Paczki i instrukcje są również dostępne w <a href="https://github.com/TheSuper123/qwerty123/releases">wydaniach GitHub</a>.</noscript>
+        <div class="section-heading"><div><p class="eyebrow">POBIERZ / WINDOWS 11 X64</p><h2 id="download-title">Twój most.<br>Teraz na komputerze.</h2></div><p class="section-description">Wybierz przenośny ZIP albo pojedynczy EXE. Program otworzy własny panel w przeglądarce. Nie wymaga Pythona ani instalatora.</p></div>
+        <div class="download-grid"><article class="feature-card"><span class="tag tag-green" id="download-version">PREVIEW 0.1.0</span><h3>MostServer dla Windows</h3><p id="download-status" role="status">Paczki pojawią się tutaj po udanej kompilacji i testach na Windows. Odnośniki aktywują się dopiero po publikacji wydania.</p><div class="download-actions"><a id="download-zip" class="button button-primary" hidden>Pobierz ZIP ↓</a><a id="download-exe" class="button download-secondary" hidden>Pojedynczy EXE ↓</a></div><a class="text-link" href="https://github.com/TheSuper123/qwerty123/actions/workflows/program.yml">Stan kompilacji ↗</a><p class="download-note">Wymagane sterowniki urządzeń Apple. Logowanie i podpisywanie wymaga własnej lub świadomie wskazanej usługi anisette v3. Brak podpisu wydawcy Windows.</p><details class="download-checksum"><summary>Suma SHA-256 paczki ZIP</summary><code id="download-sha">Dostępna po publikacji paczki.</code></details></article><article class="feature-card"><span class="tag">IPHONE · KLIENT LAN</span><h3>MostStore</h3><p>Biblioteka na Twoim PC, import z Plików, instalacje i historia. Łączysz się kodem QR, przez HTTPS z przypiętym certyfikatem i kluczem urządzenia.</p><div class="download-actions"><a id="download-ios" class="button download-secondary" hidden>MostStore · unsigned IPA ↓</a></div><p class="download-note">IPA wymaga podpisania własnym kontem i instalacji z MostServer. Nie instaluje się bezpośrednio z Safari. Ten klient nie zawiera jeszcze relaya Remote ani integracji LocalDevVPN.</p><a class="text-link" href="https://github.com/TheSuper123/qwerty123/blob/main/docs/PROGRAM_WINDOWS.md">Pierwsze uruchomienie krok po kroku ↗</a></article></div>
+      </section>
 
       <section class="section container" id="pomysl" aria-labelledby="idea-title">
         <div class="section-heading"><div><p class="eyebrow">01 / POMYSŁ</p><h2 id="idea-title">Mały ekosystem.<br>Po Twojej stronie.</h2></div><p class="section-description">Komputer odpowiada za podpisywanie i instalację. iPhone daje wygodny dostęp do aplikacji oraz stanu połączenia.</p></div>
         <div class="feature-grid">
-          <article class="feature-card"><span class="feature-number">01</span><div class="feature-icon" aria-hidden="true">⌘</div><h3>MostServer</h3><p>Twój punkt dowodzenia na Windows. Obsługa konta Apple, profile, podpisywanie IPA i kolejka instalacji.</p><span class="tag">Windows 11 · najpierw</span></article>
+          <article class="feature-card"><span class="feature-number">01</span><div class="feature-icon" aria-hidden="true">⌘</div><h3>MostServer</h3><p>Twój punkt dowodzenia na Windows. Import IPA, konto Apple, podpisywanie i trwała historia instalacji.</p><span class="tag">Windows 11 · preview</span></article>
           <article class="feature-card"><span class="feature-number">02</span><div class="feature-icon" aria-hidden="true">▯</div><h3>MostStore</h3><p>Twoja biblioteka na iPhonie. Import IPA, terminy ważności, odnowienia i czytelny postęp każdego zadania.</p><span class="tag">iPhone · SwiftUI</span></article>
           <article class="feature-card"><span class="feature-number">03</span><div class="feature-icon" aria-hidden="true">⇄</div><h3>MostLink + Tunnel</h3><p>Plan zdalnego kanału do PC i osobnego lokalnego mostu iOS. Na początek integracja z LocalDevVPN.</p><span class="tag">Remote · etap badawczy</span></article>
         </div>
@@ -112,7 +119,7 @@
       </section>
 
       <section class="section container" id="roadmapa" aria-labelledby="roadmap-title">
-        <div class="section-heading"><div><p class="eyebrow">03 / ROADMAPA</p><h2 id="roadmap-title">Od pomysłu<br>do pierwszej IPA.</h2></div><div class="roadmap-status"><span class="status-dot" aria-hidden="true"></span> Teraz: plan i strona projektu</div></div>
+        <div class="section-heading"><div><p class="eyebrow">03 / ROADMAPA</p><h2 id="roadmap-title">Od pomysłu<br>do pierwszej IPA.</h2></div><div class="roadmap-status"><span class="status-dot" aria-hidden="true"></span> Teraz: implementacja preview, test sprzętowy przed nami</div></div>
         <div class="timeline">
           <details class="milestone" open><summary><span class="milestone-index">00</span><span class="milestone-title">Udowodnić wykonalność<small>Signer Windows · konto Apple · lokalny most</small></span><span class="milestone-status">NASTĘPNY KROK</span><span class="milestone-toggle" aria-hidden="true">+</span></summary><div class="milestone-body"><p>Zainstalować własną testową IPA na fizycznym iPhonie. Osobno sprawdzić konto free, LocalDevVPN i zachowanie przy aktualizacji klienta. Sam ekran „połączono” nie zalicza tego etapu.</p></div></details>
           <details class="milestone"><summary><span class="milestone-index">01</span><span class="milestone-title">Działające MVP<small>MostServer · MostStore · USB</small></span><span class="milestone-status">PLANOWANE</span><span class="milestone-toggle" aria-hidden="true">+</span></summary><div class="milestone-body"><p>Bootstrap MostStore z PC, bezpieczny import IPA, kolejka zadań, instalacja, odnowienie i lista terminów ważności. Sukces potwierdzony na urządzeniu.</p></div></details>
@@ -136,7 +143,7 @@
       </div></section>
 
       <section class="section container faq" aria-labelledby="faq-title"><div><p class="eyebrow">DOBRZE WIEDZIEĆ</p><h2 id="faq-title">Zanim połączymy<br>pierwszy kabel.</h2></div><div class="faq-list">
-        <details><summary>Czy Most już instaluje aplikacje?</summary><p>Nie. Obecnie gotowe są plan i ta strona. Instalator Windows, klient iOS oraz transport do urządzenia są kolejnymi etapami. Nie ma jeszcze pliku do pobrania.</p></details>
+        <details><summary>Czy Most już instaluje aplikacje?</summary><p>MostServer ma zaimplementowane podpisywanie i instalację przez usługi Apple, a MostStore zleca zadania w LAN. Preview przechodzi testy programu, ale wymaga jeszcze walidacji na fizycznym iPhonie. Stan gotowych paczek znajdziesz w sekcji Pobierz. Remote i LocalDevVPN pozostają do implementacji.</p></details>
         <details><summary>Czy będzie potrzebny Mac?</summary><p>Do używania planowanego MostServer — nie, celem jest Windows. Do zbudowania aplikacji iOS programista potrzebuje macOS i Xcode, lokalnie lub w CI.</p></details>
         <details><summary>Czy lokalny VPN zastąpi komputer?</summary><p>Nie. LocalDevVPN ma pomóc w dostępie do usług własnego iPhone’a. Podpisywanie i prowadzenie instalacji pozostają na PC. Lokalny VPN sam nie łączy telefonu z domowym komputerem.</p></details>
         <details><summary>A darmowe konto Apple i wygasające aplikacje?</summary><p>Projekt zakłada osobną ścieżkę Personal Team, wymagającą weryfikacji w prototypie. Typowe profile wygasają po 7 dniach, obowiązują limity aplikacji i App ID. Most nie usuwa tych ograniczeń; ma ułatwić odnowienia.</p></details>

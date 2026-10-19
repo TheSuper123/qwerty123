@@ -1,0 +1,233 @@
+name: Build and release Most
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rust-toolchain.toml"
+      - "LICENSE"
+      - "THIRD_PARTY_NOTICES.md"
+      - "docs/PROGRAM_WINDOWS.md"
+      - ".github/workflows/program.yml"
+  pull_request:
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "Cargo.*"
+      - "rust-toolchain.toml"
+      - ".github/workflows/program.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_BUILD_JOBS: "3"
+
+concurrency:
+  group: most-program-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.94.0
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --locked --workspace --all-targets -- -D warnings
+      - run: cargo test --locked --workspace
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.94.0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --locked --workspace
+      - run: python scripts/collect_licenses.py dist/notices
+      - run: cargo build --locked --release --bin MostServer
+        env:
+          MOST_LICENSES_FILE: ${{ github.workspace }}/dist/notices/ALL_LICENSES.txt
+      - run: python scripts/package_windows.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: most-windows
+          path: |
+            dist/MostServer.exe
+            dist/MostServer-windows-x64.zip
+            dist/SHA256SUMS.txt
+            dist/windows-build.json
+          if-no-files-found: error
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: apps/ios
+        run: xcodegen generate
+      - name: Compile device archive without distribution credentials
+        working-directory: apps/ios
+        run: >-
+          xcodebuild -project MostStore.xcodeproj -scheme MostStore
+          -configuration Release -destination 'generic/platform=iOS'
+          -archivePath build/MostStore.xcarchive -jobs 3
+          CODE_SIGNING_ALLOWED=NO archive
+      - name: Package unsigned IPA
+        working-directory: apps/ios
+        run: |
+          set -euo pipefail
+          mkdir -p build/package/Payload
+          cp -R build/MostStore.xcarchive/Products/Applications/MostStore.app build/package/Payload/
+          cd build/package
+          zip -qr ../MostStore-unsigned.ipa Payload
+          test -s ../MostStore-unsigned.ipa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: most-ios
+          path: apps/ios/build/MostStore-unsigned.ipa
+          if-no-files-found: error
+
+  publish:
+    needs: [test, windows, ios]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: most-windows
+          path: release-assets
+      - uses: actions/download-artifact@v4
+        with:
+          name: most-ios
+          path: release-assets
+      - name: Create or resume release for the exact source commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="$(python3 -c 'import json; print(json.load(open("release-assets/windows-build.json"))["version"])')"
+          tag="v${version}"
+          cd release-assets
+          sha256sum --check SHA256SUMS.txt
+          sha256sum MostServer.exe MostServer-windows-x64.zip MostStore-unsigned.ipa > SHA256SUMS.txt
+          cd ..
+          printf '%s\n' \
+            'MostServer Windows preview and MostStore LAN client.' \
+            '' \
+            'Extract the Windows ZIP and run MostServer.exe. Apple device drivers are required.' \
+            'Apple login/signing additionally requires a user-configured anisette v3 service.' \
+            'MostStore-unsigned.ipa must be signed using your own account before installation.' \
+            'Windows publisher signing and physical iPhone validation have not been completed.' \
+            'Remote relay and LocalDevVPN integration are not implemented in this release.' \
+            > release-notes.txt
+          if existing="$(gh release view "$tag" --json targetCommitish --jq .targetCommitish 2>/dev/null)"; then
+            if [[ "$existing" != "$GITHUB_SHA" ]]; then
+              echo '::error::This version already belongs to another commit. Bump the application version before a new release.'
+              exit 1
+            fi
+            gh release upload "$tag" release-assets/MostServer.exe release-assets/MostServer-windows-x64.zip release-assets/SHA256SUMS.txt release-assets/MostStore-unsigned.ipa --clobber
+          else
+            gh release create "$tag" --prerelease --target "$GITHUB_SHA" --title "Most ${version} — preview" --notes-file release-notes.txt release-assets/MostServer.exe release-assets/MostServer-windows-x64.zip release-assets/SHA256SUMS.txt release-assets/MostStore-unsigned.ipa
+          fi
+      - name: Publish verified download metadata
+        run: |
+          set -euo pipefail
+          git switch main
+          git pull --ff-only origin main
+          python3 scripts/release_manifest.py --assets release-assets --repository "$GITHUB_REPOSITORY" --commit "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/downloads.json site/build-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish verified Most download links [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Update project downloads on GitHub Pages
+        id: pages
+        uses: actions/deploy-pages@v5
+
+  report-failure:
+    needs: [test, windows, ios, publish]
+    if: >-
+      always() && github.ref == 'refs/heads/main' &&
+      github.event_name != 'pull_request' && needs.publish.result != 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Record build state without credentials or build logs
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          WINDOWS_RESULT: ${{ needs.windows.result }}
+          IOS_RESULT: ${{ needs.ios.result }}
+          PUBLISH_RESULT: ${{ needs.publish.result }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import datetime, json, os
+          from pathlib import Path
+          result = {
+              'status': 'failed', 'commit': os.environ['GITHUB_SHA'],
+              'updated_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'run_url': f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}",
+              'jobs': {name.lower(): os.environ[name + '_RESULT'] for name in ['TEST', 'WINDOWS', 'IOS', 'PUBLISH']}
+          }
+          Path('site/build-status.json').write_text(json.dumps(result, indent=2) + '\n')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/build-status.json
+          git commit -m 'Report unsuccessful Most build [skip ci]'
+          git push origin HEAD:main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish build status
+        id: pages
+        uses: actions/deploy-pages@v5

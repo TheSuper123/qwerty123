@@ -1,6 +1,6 @@
 # Most — plan produktu
 
-Status: specyfikacja przed implementacją. Data opracowania: 19 października 2026.
+Status: docelowa specyfikacja, z implementacją preview 0.1.0 opisaną w [PROGRAM_WINDOWS.md](PROGRAM_WINDOWS.md). Data opracowania: 19 października 2026. Weryfikacja na fizycznym iPhonie pozostaje niezakończona.
 
 ## 1. Nazwa i obietnica
 
