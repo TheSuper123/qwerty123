@@ -1,1 +1,5 @@
-{"status":"pending","version":"0.1.0"}
+{
+  "status": "success",
+  "commit": "71115c190858cf63d48fb302c47bcef303c80092",
+  "version": "0.1.0"
+}

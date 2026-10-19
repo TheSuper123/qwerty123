@@ -1,9 +1,27 @@
 {
   "schema": 1,
-  "status": "pending",
+  "status": "ready",
   "version": "0.1.0",
+  "commit": "71115c190858cf63d48fb302c47bcef303c80092",
+  "published_at": "2026-10-19T22:23:41.178235+00:00",
   "windows_code_signed": false,
   "ios_requires_signing": true,
   "hardware_validation": "not_run",
-  "files": {}
+  "files": {
+    "MostServer-windows-x64.zip": {
+      "url": "https://github.com/TheSuper123/qwerty123/releases/download/v0.1.0/MostServer-windows-x64.zip",
+      "sha256": "be31d8f8548779522b651e383221527bab6d36c01cd866518ab2375495474101",
+      "bytes": 8734126
+    },
+    "MostServer.exe": {
+      "url": "https://github.com/TheSuper123/qwerty123/releases/download/v0.1.0/MostServer.exe",
+      "sha256": "d8b88bc939810b0249bb86813f7864040ba4a6088981cdc4ac0e5b38daac8e56",
+      "bytes": 24035328
+    },
+    "MostStore-unsigned.ipa": {
+      "url": "https://github.com/TheSuper123/qwerty123/releases/download/v0.1.0/MostStore-unsigned.ipa",
+      "sha256": "b6017248e29c4acb6c68c3f68d872bfde815176ff8407dbae33e3fc2215f61fa",
+      "bytes": 130142
+    }
+  }
 }
